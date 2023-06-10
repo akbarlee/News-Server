@@ -1,7 +1,6 @@
 
 package com.akbarlee.NewsServer.Models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -10,36 +9,75 @@ import java.util.List;
 
 @Entity
 @Table(name = "news_headlines")
-public class NewsHeadlines  {
+public class NewsHeadlines implements Serializable {
     @Id
     @GeneratedValue  (strategy = GenerationType.AUTO)
-    Long headline_id; ;
+    @JsonIgnore
+    @Column(name = "headline_id")
+    Long id; ;
 
     @OneToOne (cascade = CascadeType.ALL )
     @JoinColumn(name = "source_id")
     Source source = null;
+
+    @Column(name = "author")
     String author = "";
+    @Column(name = "title")
     String title = "";
+    @Column(name = "description")
     String description = "";
+    @Column(name = "url")
     String url = "";
+    @Column(name = "urlToImage")
     String urlToImage = "";
+    @Column(name = "publishedAt")
     String publishedAt = "";
+    @Column(name = "content")
     String content = "";
 
 
+     @ManyToOne (fetch = FetchType.EAGER )
+      @JoinColumn(name = "response_id")
+     NewsApiResponse response = null;
 
-    /*@ManyToOne (fetch = FetchType.LAZY )
-    @JoinColumn(name = "OWNER_ID")
-    private NewsApiResponse owner ;*/
+    public NewsHeadlines(Long id,
+                         Source source,
+                         String author,
+                         String title,
+                         String description,
+                         String url,
+                         String urlToImage,
+                         String publishedAt, String content
+                         , NewsApiResponse response) {
+        this.id = id;
+        this.source = source;
+        this.author = author;
+        this.title = title;
+        this.description = description;
+        this.url = url;
+        this.urlToImage = urlToImage;
+        this.publishedAt = publishedAt;
+        this.content = content;
+        this.response = response;
+    }
+
+    public NewsHeadlines() {
+
+    }
+
+   /*@ManyToOne (fetch = FetchType.EAGER )
+   @JoinColumn(name = "OWNER_ID")
+   @JsonIgnore
+   private NewsApiResponse owner ;*/
 
 
-  /*  public NewsApiResponse getResponse() {
+  /*public NewsApiResponse getResponse() {
         return owner;
     }
 
     public void setResponse(NewsApiResponse owner) {
-        this.owner = owner;
-    }*/
+        this.owner = owner; }
+*/
 
     public Source getSource() {
         return source;
@@ -53,7 +91,7 @@ public class NewsHeadlines  {
     @Override
     public String toString() {
         return "NewsHeadlines{" +
-                "headline_id=" + headline_id +
+                "headline_id=" + id +
                 ", author='" + author + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
@@ -64,12 +102,12 @@ public class NewsHeadlines  {
                 '}';
     }
 
-    public float getId() {
-        return headline_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setId(int id) {
-        this.headline_id = headline_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAuthor() {
@@ -127,6 +165,7 @@ public class NewsHeadlines  {
     public void setContent(String content) {
         this.content = content;
     }
+
 
 
 }
