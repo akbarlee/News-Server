@@ -30,12 +30,7 @@ public  class NewsApiResponse implements Serializable {
    @JsonManagedReference
     List<NewsHeadlines> articles = new ArrayList<>();
 
-    public NewsApiResponse(Long id, String status, int totalResults , List<NewsHeadlines> articles) {
-        this.id = id;
-        this.status = status;
-        this.totalResults = totalResults;
-        this.articles = articles;
-    }
+
   public NewsApiResponse() {
 
   }
