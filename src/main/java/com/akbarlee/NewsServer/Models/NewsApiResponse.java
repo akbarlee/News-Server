@@ -25,15 +25,26 @@ public  class NewsApiResponse implements Serializable {
     int totalResults;
 
 
-   @OneToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true )
+    @OneToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true )
     @JoinColumn(name="headline_id")
-   @JsonManagedReference
+    @JsonManagedReference
     List<NewsHeadlines> articles = new ArrayList<>();
 
 
-  public NewsApiResponse() {
 
-  }
+    @Override
+    public String toString() {
+        return "NewsApiResponse{" +
+                "id=" + id +
+                ", status='" + status + '\'' +
+                ", totalResults=" + totalResults +
+                ", articles=" + articles +
+                '}';
+    }
+
+    public NewsApiResponse() {
+
+    }
 
     public Long getId() {
         return id;
@@ -71,4 +82,3 @@ public  class NewsApiResponse implements Serializable {
 
 
 }
-

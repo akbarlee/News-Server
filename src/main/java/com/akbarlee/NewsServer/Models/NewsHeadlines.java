@@ -1,4 +1,3 @@
-
 package com.akbarlee.NewsServer.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,9 +15,10 @@ public class NewsHeadlines implements Serializable {
     @Column(name = "headline_id")
     Long id; ;
 
-    @OneToOne (cascade = CascadeType.ALL )
-    @JoinColumn(name = "source_id")
-    Source source = null;
+
+    @OneToOne (cascade = CascadeType.ALL , fetch = FetchType.EAGER )
+    @JoinColumn(name = "s_id" , referencedColumnName = "source_id")
+    Source source = new Source();
 
     @Column(name = "author")
     String author = "";
@@ -34,32 +34,14 @@ public class NewsHeadlines implements Serializable {
     String publishedAt = "";
     @Column(name = "content")
     String content = "";
+    @Column(name = "country")
+    String country = "";
+    @Column(name = "category")
+    String category = "";
 
 
-     @ManyToOne (fetch = FetchType.EAGER )
-      @JoinColumn(name = "response_id")
-     NewsApiResponse response = null;
 
-    public NewsHeadlines(Long id,
-                         Source source,
-                         String author,
-                         String title,
-                         String description,
-                         String url,
-                         String urlToImage,
-                         String publishedAt, String content
-                         , NewsApiResponse response) {
-        this.id = id;
-        this.source = source;
-        this.author = author;
-        this.title = title;
-        this.description = description;
-        this.url = url;
-        this.urlToImage = urlToImage;
-        this.publishedAt = publishedAt;
-        this.content = content;
-        this.response = response;
-    }
+
 
     public NewsHeadlines() {
 
@@ -91,7 +73,8 @@ public class NewsHeadlines implements Serializable {
     @Override
     public String toString() {
         return "NewsHeadlines{" +
-                "headline_id=" + id +
+                "id=" + id +
+                ", source=" + source +
                 ", author='" + author + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
@@ -99,6 +82,8 @@ public class NewsHeadlines implements Serializable {
                 ", urlToImage='" + urlToImage + '\'' +
                 ", publishedAt='" + publishedAt + '\'' +
                 ", content='" + content + '\'' +
+                ", country='" + country + '\'' +
+                ", category='" + category + '\'' +
                 '}';
     }
 
@@ -166,6 +151,21 @@ public class NewsHeadlines implements Serializable {
         this.content = content;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
 
 }
