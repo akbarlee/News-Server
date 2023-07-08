@@ -25,7 +25,7 @@ dependencies {
 ##  MySQL bazasında cədvəlin diagramı:
 ![Table iearxiya](https://github.com/akbarlee/News-Server/assets/62420106/7b0d0621-82db-40ec-a19c-8f4b9d85f26c)
 
-##  Android tətbiqində kateqoriya filtirasiyası üçün yazdığım endpoint:
+##  Android tətbiqinin kateqoriya filtirasiyası üçün yazdığım endpoint:
 
  ```java #7 
   @RequestMapping(value = "/news")
@@ -49,5 +49,18 @@ dependencies {
     }
 ```
   Bu metodun içində ``` newsList = newsDAO.getAll() ```  http://localhost:8080/news sorğusu ilə bütün resursları çağırarkən,   ```newsList = newsDAO.getAllByCategory(category)``` metodu http://localhost:8080/news?category=general sorğusu ilə  verilənlər bazasında  <kbd>  general </kbd> dəyişəni ilə uyğun gələn bütün resursları çağırır.
+
+```getAllByCategory(category)``` metodunun işləmə prinsipi üçün ətraflı izah:                
+ Aşağıdaki nümunədə  ``` headlines ``` listinin içinə ```findAll()``` metodu əlavə etdikdən sonra ```stream()``` vasitəsilə ```filter()``` və ````collect()```` metodlarını   return   edirik. ```filter``` funksional metodu streaming edilmiş list içərisində ```.equals(category)``` ilə  stream elementləri üzərində bir-bir test edir. Uyğunlaşıb true qiymət alan elementləri yeni  streaming'ə əlavə etmiş olur. ``` .collect(Collectors.toList()) ``` metodu isə true qiymət alan yəni filter edilmiş streamingləri toplayıb yeni Listin içinə əlavə edir. Beləliklə müəyyən edilmiş kateqoriyaya aid xəbərlərin List'i əlimizdə olmuş olur.
+
+``` java 
+   public List<NewsHeadlines> getAllByCategory(String category) {
+        List<NewsHeadlines> headlines = newsRepository.findAll();
+        return headlines.stream()
+                .filter(news -> news.getCategory().equals(category))
+                .collect(Collectors.toList());
+    }
+```
+
 
 
